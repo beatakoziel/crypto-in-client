@@ -1,31 +1,18 @@
 <template>
   <v-app>
-    <app-header></app-header>
-    <app-carousel></app-carousel>
-    <info-banner></info-banner>
-    <algorithm-data-stepper></algorithm-data-stepper>
+
+    <v-main>
+      <navigation-drawers></navigation-drawers>
+        <router-view></router-view>
+
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import AppHeader from '@/components/AppHeader';
-import AppCarousel from "@/components/AppCarousel";
-import InfoBanner from "@/components/InfoBanner";
-import AlgorithmDataStepper from "@/components/AlgorithmDataStepper";
-
+import NavigationDrawers from "@/components/NavigationDrawers";
 export default {
-  name: 'App',
-
-  components: {
-    AlgorithmDataStepper,
-    InfoBanner,
-    AppCarousel,
-    AppHeader
-  },
-
-  data() {
-    return {}
-  },
-};
+  components: {NavigationDrawers}
+}
 </script>
 

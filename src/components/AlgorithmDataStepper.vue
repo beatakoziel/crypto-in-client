@@ -15,9 +15,6 @@
     <v-stepper-content step="1">
       <v-form ref="form">
         <v-text-field
-            v-model="model"
-            :counter="max"
-            :rules="rules"
             type="number"
             label="Amount in USDT"
             class="quarter-view-width"
@@ -45,21 +42,15 @@
     <v-stepper-content step="2">
       <v-form ref="form">
         <v-text-field
-            v-model="model"
-            :counter="max"
-            :rules="rules"
             type="number"
             label="Minimum percentage increase"
             class="quarter-view-width"
         ></v-text-field>
         <v-spacer></v-spacer>
         <v-text-field
-            v-model="date"
             label="Earliest date to be checked"
             prepend-icon="mdi-calendar"
             readonly
-            v-bind="attrs"
-            v-on="on"
             class="quarter-view-width"
         ></v-text-field>
       </v-form>
@@ -119,27 +110,18 @@
               md="6"
           >
             <v-text-field
-                v-model="model"
-                :counter="max"
-                :rules="rules"
                 type="number"
                 label="Population size"
                 class="quarter-view-width"
             ></v-text-field>
             <v-spacer></v-spacer>
             <v-text-field
-                v-model="model"
-                :counter="max"
-                :rules="rules"
                 type="number"
                 label="Generations"
                 class="quarter-view-width"
             ></v-text-field>
             <v-spacer></v-spacer>
             <v-text-field
-                v-model="model"
-                :counter="max"
-                :rules="rules"
                 type="number"
                 label="Crossover probability"
                 class="quarter-view-width"
@@ -151,25 +133,18 @@
               md="6"
           >
             <v-text-field
-                v-model="model"
-                :counter="max"
-                :rules="rules"
                 type="number"
                 label="Mutation probability"
                 class="quarter-view-width"
             ></v-text-field>
             <v-spacer></v-spacer>
             <v-text-field
-                v-model="model"
-                :counter="max"
-                :rules="rules"
                 type="number"
                 label="Elitism"
                 class="quarter-view-width"
             ></v-text-field>
             <v-spacer></v-spacer>
             <v-checkbox
-                v-model="checkbox"
                 label="Maximise fitness"
             ></v-checkbox>
             <v-spacer></v-spacer>
@@ -178,7 +153,7 @@
       </v-form>
       <v-btn
           color="primary"
-          @click="e6 = 1"
+          @click="getCalculationsResult()"
       >
         Calculate
       </v-btn>
@@ -186,16 +161,34 @@
         Cancel
       </v-btn>
     </v-stepper-content>
+    <v-textarea
+        label="Komentarz"
+        :counter="500"
+        v-model="result"
+        prepend-icon="mdi-comment-outline">
+    </v-textarea>
   </v-stepper>
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   data: () => ({
+    result: "",
     items: ['Bitcoin (BTC)', 'Etherium (ETH)', 'Shiba Inu (SHIB)'],
     value: ['BTC', 'ETH', 'SHIB'],
     e6: 1
   }),
+  methods: {
+    ...mapActions(["getCalculationsResult"]),
+    calculate() {
+      this.getCalculationsResult().then((response) => {
+        this.result = response;
+        console.log("UDAO")
+      });
+    },
+  },
 }
 </script>
 
