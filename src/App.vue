@@ -3,7 +3,7 @@
 
     <v-main>
       <navigation-drawers></navigation-drawers>
-        <router-view></router-view>
+      <router-view></router-view>
 
     </v-main>
   </v-app>
@@ -11,8 +11,16 @@
 
 <script>
 import NavigationDrawers from "@/components/NavigationDrawers";
+
 export default {
   components: {NavigationDrawers}
 }
 </script>
+
+<style>
+a {
+  text-decoration: none;
+  color: white !important;
+}
+</style>
 

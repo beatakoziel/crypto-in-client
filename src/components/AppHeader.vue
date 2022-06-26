@@ -1,7 +1,6 @@
 <template>
   <v-app-bar
       clipped-left
-      color="white"
       dark
   >
     <div class="d-flex align-center">
@@ -19,6 +18,6 @@
 <style>
 
 .display-1 {
-  color: black;
+  color: white;
 }
 </style>
