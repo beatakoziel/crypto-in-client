@@ -1,9 +1,9 @@
 import Client from './axiosClient';
 
-const resource = '/genetic';
+const resource = '/calculator';
 
 export default {
-    get() {
-        return Client.get(`${resource}`);
+    get(algorithmInitialData) {
+        return Client.post(`${resource}/divide`, algorithmInitialData);
     }
 };

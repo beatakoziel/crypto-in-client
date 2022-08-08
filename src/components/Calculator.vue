@@ -3,7 +3,7 @@
     <app-header></app-header>
     <app-carousel></app-carousel>
     <info-banner></info-banner>
-    <algorithm-data-stepper></algorithm-data-stepper>
+    <calculator-form></calculator-form>
   </div>
 </template>
 
@@ -11,13 +11,13 @@
 import AppHeader from '@/components/AppHeader';
 import AppCarousel from "@/components/AppCarousel";
 import InfoBanner from "@/components/InfoBanner";
-import AlgorithmDataStepper from "@/components/AlgorithmDataStepper";
+import CalculatorForm from "@/components/CalculatorForm";
 
 export default {
   name: 'App',
 
   components: {
-    AlgorithmDataStepper,
+    CalculatorForm,
     InfoBanner,
     AppCarousel,
     AppHeader

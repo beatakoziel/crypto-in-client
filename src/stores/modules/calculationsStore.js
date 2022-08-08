@@ -3,16 +3,17 @@ import Repository from "../../repositories/repositoryFactory"
 const CalculationsRepository = Repository.get("calculations");
 
 const state = () => ({
-    numberOfGenerations: null,
-    numberOfParentsMating: null,
-    solPerPop: null,
+    amount: null,
+    generationsNumber: 10,
+    solutionsPerPopulation: 10,
+    lambda: 0.5,
     result: null
 })
 
 const getters = {}
 
 const actions = {
-    getCalculationsResult({commit}) {
+    divideMoneyBetweenAssets({commit}) {
         return CalculationsRepository.get().then(response => {
             commit('setResult', response.data)
             return response;
@@ -27,14 +28,14 @@ const actions = {
 }
 
 const mutations = {
-    setNumberOfGenerations(state, numberOfGenerations) {
-        state.numberOfGenerations = numberOfGenerations
+    setNumberOfGenerations(state, generationsNumber) {
+        state.generationsNumber = generationsNumber
     },
     setNumberOfParentsMating(state, numberOfParentsMating) {
         state.numberOfParentsMating = numberOfParentsMating;
     },
-    setSolPerPop(state, solPerPop) {
-        state.solPerPop = solPerPop;
+    setSolutionsPerPopulation(state, solutionsPerPopulation) {
+        state.solutionsPerPopulation = solutionsPerPopulation;
     },
     setResult(state, result) {
         state.result = result;
