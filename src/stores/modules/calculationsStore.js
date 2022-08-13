@@ -40,15 +40,6 @@ const actions = {
 }
 
 const mutations = {
-    setNumberOfGenerations(state, generationsNumber) {
-        state.generationsNumber = generationsNumber
-    },
-    setNumberOfParentsMating(state, numberOfParentsMating) {
-        state.numberOfParentsMating = numberOfParentsMating;
-    },
-    setSolutionsPerPopulation(state, solutionsPerPopulation) {
-        state.solutionsPerPopulation = solutionsPerPopulation;
-    },
     setErrorResult(state, result) {
         state.result.response = result;
         state.result.isError = true;

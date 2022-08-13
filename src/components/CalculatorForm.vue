@@ -1,7 +1,7 @@
 <template>
   <v-card vertical
           class="px-15 mx-15 mb-15" max-width="90vw">
-    <v-form v-model="valid">
+    <v-form v-model="isFormValid">
       <v-container>
         <div class="mb-5">
           <div class="pt-5 text-h6 text--primary">
@@ -32,6 +32,7 @@
                 v-model="formData.assets"
                 :items="assets"
                 label="Cryptocurrencies"
+                :rules="selectRules"
                 multiple
                 chips
                 outlined
@@ -94,7 +95,7 @@
         </v-row>
       </v-container>
       <v-col class=" text-right">
-        <v-btn :loading="isLoading" :disabled="isLoading" outlined class="mb-5" color="primary" text
+        <v-btn :loading="isLoading" :disabled="isLoading || !isFormValid" outlined class="mb-5" color="primary" text
                @click="calculate()">CALCULATE
         </v-btn>
       </v-col>
@@ -116,6 +117,7 @@ import {mapState, mapActions, mapGetters} from "vuex";
 export default {
   data: () => ({
     result: [],
+    isFormValid: false,
     formData: {
       amount: null,
       assets: [],
@@ -123,7 +125,7 @@ export default {
       solutionsPerPopulation: 10,
       lambda: 0.5
     },
-    value: ['BTC', 'ETH', 'SHIB'],
+    value: [],
     amountRules: [
       v => (v && v >= 20) || "Value should be above 20$"
     ],
@@ -133,6 +135,10 @@ export default {
     lambdaRules: [
       v => (v && v >= 0) || "Value should be above 0",
       v => (v && v <= 1) || "Value should be below 1"
+    ],
+    selectRules: [
+      v => !!v || "Selection is required",
+      v => v.length>1 || "At least 2 items selected are required"
     ]
   }),
   methods: {
