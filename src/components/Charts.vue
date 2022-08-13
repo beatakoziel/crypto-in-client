@@ -2,15 +2,19 @@
   <div>
     <app-header/>
     <form class="centered my-12" ref="quickBlinkChart"/>
+    <v-card vertical
+            class="px-15 mx-15 mb-15" max-width="95vw">
     <form class="centered my-12" ref="realTimeChart"/>
-    <form class="centered my-12" ref="chartWidget"/>
     <vue-trading-view
         class="mt-10"
         :options="{
+      width: '100%',
       symbol: 'BINANCE:BTCUSDT',
       theme: 'dark',
       isTransparent: 'true'}"
     ></vue-trading-view>
+    <form class="centered my-12" ref="chartWidget"/>
+    </v-card>
   </div>
 </template>
 
@@ -34,8 +38,7 @@ export default {
   },
 
   data() {
-    return {
-    }
+    return {}
   },
   mounted() {
     const plugin = document.createElement("script");
@@ -45,7 +48,7 @@ export default {
     );
     plugin.async = true;
     plugin.textContent = "{\n" +
-        "            \"width\": 1000,\n" +
+        "            \"width\": \"100%\",\n" +
         "              \"height\": 490,\n" +
         "              \"defaultColumn\": \"overview\",\n" +
         "              \"screener_type\": \"crypto_mkt\",\n" +

@@ -1,6 +1,6 @@
 <template>
   <v-card vertical
-          class="px-15 mx-15 mb-15" max-width="90vw">
+          class="px-15 mx-15 mb-15" max-width="95vw">
     <v-form v-model="isFormValid">
       <v-container>
         <div class="mb-5">
