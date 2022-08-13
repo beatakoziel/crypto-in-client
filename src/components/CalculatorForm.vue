@@ -18,7 +18,7 @@
             <v-text-field
                 v-model.number="formData.amount"
                 :rules="amountRules"
-                label="Amount in USDT"
+                label="Amount in USDT*"
                 required
                 outlined
                 type="number"
@@ -31,7 +31,7 @@
             <v-select
                 v-model="formData.assets"
                 :items="assets"
-                label="Cryptocurrencies"
+                label="Cryptocurrencies*"
                 :rules="selectRules"
                 multiple
                 chips
@@ -54,7 +54,7 @@
             <v-text-field
                 v-model.number="formData.lambda"
                 :rules="lambdaRules"
-                label="Lambda"
+                label="Lambda*"
                 outlined
                 type="number"
             ></v-text-field>
@@ -75,7 +75,7 @@
             <v-text-field
                 v-model.number="formData.generationsNumber"
                 :rules="positiveRules"
-                label="Generations number"
+                label="Generations number*"
                 outlined
                 type="number"
             ></v-text-field>
@@ -87,7 +87,7 @@
             <v-text-field
                 v-model.number="formData.solutionsPerPopulation"
                 :rules="positiveRules"
-                label="Solutions per population"
+                label="Solutions per population*"
                 outlined
                 type="number"
             ></v-text-field>
@@ -100,8 +100,9 @@
         </v-btn>
       </v-col>
       <v-row>
-        <v-col>
-          <v-alert color="darkred" type="error" v-if="getResult.isError">Caught exception:
+        <v-col style="max-width: 500px">
+          <v-alert border="bottom" color="darkred" type="info" v-if="!isFormValid">Make sure that you filled all the required fields</v-alert>
+          <v-alert border="bottom" color="none" type="error" v-if="getResult.isError">Caught exception:
             {{ getResult.response }}
           </v-alert>
           <p style="color: dodgerblue" v-else>{{ getResult.response }}</p>
