@@ -101,11 +101,12 @@
       </v-col>
       <v-row>
         <v-col style="max-width: 500px">
-          <v-alert border="bottom" color="darkred" type="info" v-if="!isFormValid">Make sure that you filled all the required fields</v-alert>
+          <v-alert border="bottom" color="darkred" type="info" v-if="!isFormValid">Make sure that you filled all the
+            required fields
+          </v-alert>
           <v-alert border="bottom" color="none" type="error" v-if="getResult.isError">Caught exception:
             {{ getResult.response }}
           </v-alert>
-          <p style="color: dodgerblue" v-else>{{ getResult.response }}</p>
         </v-col>
       </v-row>
     </v-form>
@@ -139,7 +140,7 @@ export default {
     ],
     selectRules: [
       v => !!v || "Selection is required",
-      v => v.length>1 || "At least 2 items selected are required"
+      v => v.length > 1 || "At least 2 items selected are required"
     ]
   }),
   methods: {

@@ -26,13 +26,13 @@ const getters = {
 const actions = {
     divideMoneyBetweenAssets({commit}, algorithmInitialData) {
         commit('startLoading')
+        commit('resetResult')
         return CalculationsRepository.calculate(algorithmInitialData).then(response => {
             console.log(response)
             commit('setSuccessResult', response.data)
             commit('stopLoading')
             return response;
         }).catch(error => {
-            console.log(error)
             commit('setErrorResult', error.message)
             commit('stopLoading')
         })
@@ -46,6 +46,10 @@ const mutations = {
     },
     setSuccessResult(state, result) {
         state.result.response = result;
+        state.result.isError = false;
+    },
+    resetResult(state) {
+        state.result.response = null;
         state.result.isError = false;
     },
     startLoading(state) {
