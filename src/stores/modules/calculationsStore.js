@@ -7,24 +7,36 @@ const state = () => ({
     generationsNumber: 10,
     solutionsPerPopulation: 10,
     lambda: 0.5,
-    result: null
+    result: {
+        response: null,
+        isError: false
+    },
+    loading: false
 })
 
-const getters = {}
+const getters = {
+    isLoading(state) {
+        return state.loading
+    },
+    getResult(state) {
+        return state.result
+    }
+}
 
 const actions = {
-    divideMoneyBetweenAssets({commit}) {
-        return CalculationsRepository.get().then(response => {
-            commit('setResult', response.data)
+    divideMoneyBetweenAssets({commit}, algorithmInitialData) {
+        commit('startLoading')
+        return CalculationsRepository.calculate(algorithmInitialData).then(response => {
+            console.log(response)
+            commit('setSuccessResult', response.data)
+            commit('stopLoading')
             return response;
+        }).catch(error => {
+            console.log(error)
+            commit('setErrorResult', error.message)
+            commit('stopLoading')
         })
     },
-    /*    addMeeting({dispatch}, meeting) {
-            return MeetingsRepository.add(meeting).then(response => {
-                dispatch('getMeetings');
-                return response;
-            })
-        },*/
 }
 
 const mutations = {
@@ -37,8 +49,19 @@ const mutations = {
     setSolutionsPerPopulation(state, solutionsPerPopulation) {
         state.solutionsPerPopulation = solutionsPerPopulation;
     },
-    setResult(state, result) {
-        state.result = result;
+    setErrorResult(state, result) {
+        state.result.response = result;
+        state.result.isError = true;
+    },
+    setSuccessResult(state, result) {
+        state.result.response = result;
+        state.result.isError = false;
+    },
+    startLoading(state) {
+        state.loading = true
+    },
+    stopLoading(state) {
+        state.loading = false
     }
 }
 

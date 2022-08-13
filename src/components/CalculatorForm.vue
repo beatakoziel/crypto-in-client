@@ -16,7 +16,7 @@
               md="4"
           >
             <v-text-field
-                v-model="formData.amount"
+                v-model.number="formData.amount"
                 :rules="amountRules"
                 label="Amount in USDT"
                 required
@@ -51,7 +51,7 @@
               md="4"
           >
             <v-text-field
-                v-model="formData.lambda"
+                v-model.number="formData.lambda"
                 :rules="lambdaRules"
                 label="Lambda"
                 outlined
@@ -72,7 +72,7 @@
               md="4"
           >
             <v-text-field
-                v-model="formData.generationsNumber"
+                v-model.number="formData.generationsNumber"
                 :rules="positiveRules"
                 label="Generations number"
                 outlined
@@ -84,7 +84,7 @@
               md="4"
           >
             <v-text-field
-                v-model="formData.solutionsPerPopulation"
+                v-model.number="formData.solutionsPerPopulation"
                 :rules="positiveRules"
                 label="Solutions per population"
                 outlined
@@ -93,23 +93,35 @@
           </v-col>
         </v-row>
       </v-container>
+      <v-col class=" text-right">
+        <v-btn :loading="isLoading" :disabled="isLoading" outlined class="mb-5" color="primary" text
+               @click="calculate()">CALCULATE
+        </v-btn>
+      </v-col>
+      <v-row>
+        <v-col>
+          <v-alert color="darkred" type="error" v-if="getResult.isError">Caught exception:
+            {{ getResult.response }}
+          </v-alert>
+          <p style="color: dodgerblue" v-else>{{ getResult.response }}</p>
+        </v-col>
+      </v-row>
     </v-form>
   </v-card>
 </template>
 
 <script>
-import {mapState, mapActions} from "vuex";
+import {mapState, mapActions, mapGetters} from "vuex";
 
 export default {
   data: () => ({
-    result: "",
+    result: [],
     formData: {
       amount: null,
       assets: [],
       generationsNumber: 10,
       solutionsPerPopulation: 10,
-      lambda: 0.5,
-      result: null
+      lambda: 0.5
     },
     value: ['BTC', 'ETH', 'SHIB'],
     amountRules: [
@@ -124,27 +136,15 @@ export default {
     ]
   }),
   methods: {
-    ...mapActions(["getAssets"]),
-    /*    divideMoneyBetweenAssets() {
-          this.divideMoneyBetweenAssets(this.formData).then((response) => {
-            console.log(response.status)
-            if (response.status == "201") {
-              this.dialog = false;
-              this.showSuccessMsg();
-            } else if (response.status === "403") {
-              this.showErrorMsg();
-              this.logout();
-              this.resetState();
-              this.$router.push({name: "Auth"});
-            } else {
-              this.errorMessage = "Upewnij się, że wprowadzone dane są prawidłowe.";
-            }
-          });
-        },*/
+    ...mapActions(["getAssets", "divideMoneyBetweenAssets"]),
+    calculate() {
+      this.divideMoneyBetweenAssets(this.formData)
+    },
   },
   computed: {
+    ...mapGetters(['isLoading', 'getResult']),
     ...mapState({
-      assets: (state) => state.infoStore.assets,
+      assets: (state) => state.infoStore.assets
     }),
   },
   mounted() {
