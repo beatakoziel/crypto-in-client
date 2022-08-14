@@ -13,17 +13,17 @@
         </v-col>
       </v-row>
       <div v-if="getResult.response && getResult.response.solution.length > 0">
-        <v-row style="display: flex; justify-content: center; align-items: center" >
-              <v-data-table
-                  :headers="solutionTableHeaders"
-                  :items="getResult.response.solution"
-                  :items-per-page="5"
-                  class="mr-15"
-                  style="max-width: 600px"
-              ></v-data-table>
-            <div class="mt-5 ml-15">
-              <apexChart width="400" type="donut" :options="options" :series="getSeries"></apexChart>
-            </div>
+        <v-row style="display: flex; justify-content: center; align-items: center">
+          <v-data-table
+              :headers="solutionTableHeaders"
+              :items="getResult.response.solution"
+              :items-per-page="5"
+              class="mr-15"
+              style="max-width: 600px"
+          ></v-data-table>
+          <div class="mt-5 ml-15">
+            <apexChart width="400" type="donut" :options="options" :series="getSeries"></apexChart>
+          </div>
         </v-row>
         <v-row class="mt-15 mb-15" style="display: flex; justify-content: center; align-items: center">
           <v-data-table
@@ -33,6 +33,11 @@
               class="mb-10"
               style="min-width: 1100px"
           ></v-data-table>
+        </v-row>
+        <v-row class="mt-15 mb-15" style="display: flex; justify-content: center; align-items: center">
+          <div>
+            <apexChart width="1100" height="300" type="line" :options="chartOptions" :series="getLineChartSeries"></apexChart>
+          </div>
         </v-row>
       </div>
     </v-card>
@@ -45,6 +50,41 @@ import {mapState, mapGetters} from "vuex";
 export default {
   data() {
     return {
+      chartOptions: {
+        stroke: {
+          colors: ['#29487b', '#6385b5', '#b1b0b1', '#b09878']
+        },
+        chart: {
+          background: '#1e1e1e',
+          width: "1000px"
+        },
+        dataLabels: {
+          enabled: false
+        },
+        theme: {
+          mode: 'dark',
+        },
+        title: {
+          text: 'Fitness value change over generations',
+          align: 'center',
+          style: {
+            fontSize: "16px",
+            color: '#666'
+          }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            gradientToColors: ['#29487b', '#6385b5', '#b1b0b1', '#b09878'],
+            shadeIntensity: 1,
+            type: 'horizontal',
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100, 100, 100]
+          },
+        },
+      },
       options: {
         stroke: {
           colors: ['#1e1e1e']
@@ -75,11 +115,9 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapGetters(['isLoading', 'getResult', 'getSeries', 'getLabels']),
+    ...mapGetters(['isLoading', 'getResult', 'getSeries', 'getLabels', 'getLineChartSeries']),
     ...mapState({
-      assets: (state) => state.infoStore.assets,
-      donutChartSeries: (state) => state.calculationsStore.series,
-      donutChartLabels: (state) => state.calculationsStore.labels
+      assets: (state) => state.infoStore.assets
     }),
 
   },

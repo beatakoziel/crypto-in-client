@@ -13,6 +13,7 @@ const state = () => ({
     },
     donutChartSeries: [],
     donutChartLabels: [],
+    lineChartSeries: [],
     loading: false
 })
 
@@ -28,6 +29,9 @@ const getters = {
     },
     getLabels(state) {
         return state.donutChartLabels
+    },
+    getLineChartSeries(state) {
+        return state.lineChartSeries
     }
 }
 
@@ -63,6 +67,12 @@ const mutations = {
         Array.from(result.solution).forEach(elem => {
             state.donutChartLabels.push(elem.assetName)
         })
+        state.lineChartSeries = []
+        let series = []
+        Array.from(result.generations_results).forEach(elem => {
+                series.push(elem.fitness)
+        })
+        state.lineChartSeries.push({name: "Fitness value", data: series})
     },
     resetResult(state) {
         state.result.response = null;
