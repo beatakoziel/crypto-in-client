@@ -5,6 +5,8 @@ import {store} from './stores/index'
 import {calculatorRoutes} from "./routers/calculatorRouter"
 import {chartsRoutes} from "./routers/chartsRouter"
 import VueRouter from "vue-router"
+import '@/plugins/apexcharts'
+import ResultCard from "@/components/ResultCard";
 
 Vue.config.productionTip = false
 let routes = [...calculatorRoutes, ...chartsRoutes]
@@ -19,6 +21,7 @@ new Vue({
     vuetify,
     store,
     router,
+    ResultCard,
     render: h => h(App)
 }).$mount('#app')
 

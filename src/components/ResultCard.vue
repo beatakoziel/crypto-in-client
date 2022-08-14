@@ -1,18 +1,28 @@
 <template>
   <div>
-    <v-card v-if="!getResult.isError" vertical
+    <v-card vertical
             class="px-15 mx-15 mb-15" max-width="95vw">
       <v-row>
         <v-col>
           <div style="min-height: 4px;">
             <v-progress-linear class="mb-5"
-                :indeterminate="isLoading"
-                :query="true"
+                               :indeterminate="isLoading"
+                               :query="true"
             ></v-progress-linear>
           </div>
-          <p v-if="!getResult.isError">
-            {{ getResult.response }}
-          </p>
+        </v-col>
+      </v-row>
+      <v-row v-if="getResult.response && getResult.response.length > 0">
+        <v-col>
+          <v-data-table
+              :headers="headers"
+              :items="getResult.response"
+              :items-per-page="5"
+              class="elevation-1"
+          ></v-data-table>
+          <div style="display: flex; justify-content: center; align-items: center" class="mt-5">
+            <apexChart width="380" type="donut" :options="options" :series="getSeries"></apexChart>
+          </div>
         </v-col>
       </v-row>
     </v-card>
@@ -20,49 +30,42 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapGetters} from "vuex";
+import {mapState, mapGetters} from "vuex";
 
 export default {
-  data: () => ({
-    result: [],
-    isFormValid: false,
-    formData: {
-      amount: null,
-      assets: [],
-      generationsNumber: 10,
-      solutionsPerPopulation: 10,
-      lambda: 0.5
-    },
-    value: [],
-    amountRules: [
-      v => (v && v >= 20) || "Value should be above 20$"
-    ],
-    positiveRules: [
-      v => (v && v >= 0) || "Value should be above 0"
-    ],
-    lambdaRules: [
-      v => (v && v >= 0) || "Value should be above 0",
-      v => (v && v <= 1) || "Value should be below 1"
-    ],
-    selectRules: [
-      v => !!v || "Selection is required",
-      v => v.length > 1 || "At least 2 items selected are required"
-    ]
-  }),
-  methods: {
-    ...mapActions(["getAssets", "divideMoneyBetweenAssets"]),
-    calculate() {
-      this.divideMoneyBetweenAssets(this.formData)
-    },
+  data() {
+    return {
+      series: this.getSeries,
+      options: {
+        stroke: {
+          colors: ['#1e1e1e']
+        },
+        colors: ['#29487b', '#6385b5', '#b1b0b1', '#b09878']
+      },
+      headers: [
+        {
+          text: 'Asset',
+          align: 'start',
+          sortable: false,
+          value: 'assetName',
+        },
+        {text: 'Percentage [%]', value: 'percentageSolution'},
+        {text: 'Capital [USD]', value: 'moneySolution'}
+      ],
+    }
   },
+  methods: {},
   computed: {
-    ...mapGetters(['isLoading', 'getResult']),
+    ...mapGetters(['isLoading', 'getResult', 'getSeries', 'getLabels']),
     ...mapState({
-      assets: (state) => state.infoStore.assets
+      assets: (state) => state.infoStore.assets,
+      donutChartSeries: (state) => state.calculationsStore.series,
+      donutChartLabels: (state) => state.calculationsStore.labels
     }),
+
   },
   mounted() {
-    this.getAssets();
   }
+
 }
 </script>

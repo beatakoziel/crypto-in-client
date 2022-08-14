@@ -8,9 +8,11 @@ const state = () => ({
     solutionsPerPopulation: 10,
     lambda: 0.5,
     result: {
-        response: null,
+        response: [],
         isError: false
     },
+    donutChartSeries: [],
+    donutChartLabels: [],
     loading: false
 })
 
@@ -20,6 +22,12 @@ const getters = {
     },
     getResult(state) {
         return state.result
+    },
+    getSeries(state) {
+        return state.donutChartSeries
+    },
+    getLabels(state) {
+        return state.donutChartLabels
     }
 }
 
@@ -47,6 +55,14 @@ const mutations = {
     setSuccessResult(state, result) {
         state.result.response = result;
         state.result.isError = false;
+        state.donutChartSeries = []
+        Array.from(result).forEach(elem => {
+            state.donutChartSeries.push(elem.moneySolution)
+        })
+        state.donutChartLabels = []
+        Array.from(result).forEach(elem => {
+            state.donutChartLabels.push(elem.assetName)
+        })
     },
     resetResult(state) {
         state.result.response = null;

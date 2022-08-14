@@ -117,32 +117,34 @@
 import {mapState, mapActions, mapGetters} from "vuex";
 
 export default {
-  data: () => ({
-    result: [],
-    isFormValid: false,
-    formData: {
-      amount: null,
-      assets: [],
-      generationsNumber: 10,
-      solutionsPerPopulation: 10,
-      lambda: 0.5
-    },
-    value: [],
-    amountRules: [
-      v => (v && v >= 20) || "Value should be above 20$"
-    ],
-    positiveRules: [
-      v => (v && v >= 0) || "Value should be above 0"
-    ],
-    lambdaRules: [
-      v => (v && v >= 0) || "Value should be above 0",
-      v => (v && v <= 1) || "Value should be below 1"
-    ],
-    selectRules: [
-      v => !!v || "Selection is required",
-      v => v.length > 1 || "At least 2 items selected are required"
-    ]
-  }),
+  data() {
+    return {
+      result: [],
+      isFormValid: false,
+      formData: {
+        amount: null,
+        assets: [],
+        generationsNumber: 10,
+        solutionsPerPopulation: 10,
+        lambda: 0.5
+      },
+      value: [],
+      amountRules: [
+        v => (v && v >= 20) || "Value should be above 20$"
+      ],
+      positiveRules: [
+        v => (v && v >= 0) || "Value should be above 0"
+      ],
+      lambdaRules: [
+        v => (v && v >= 0) || "Value should be above 0",
+        v => (v && v <= 1) || "Value should be below 1"
+      ],
+      selectRules: [
+        v => !!v || "Selection is required",
+        v => v.length > 1 || "At least 2 items selected are required"
+      ]
+    }
+  },
   methods: {
     ...mapActions(["getAssets", "divideMoneyBetweenAssets"]),
     calculate() {
