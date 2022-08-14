@@ -6,4 +6,7 @@ export default {
     getAssets() {
         return Client.get(`${resource}/assets`);
     },
+    getPeriods() {
+        return Client.get(`${resource}/periods`);
+    },
 };

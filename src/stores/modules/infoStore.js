@@ -3,7 +3,8 @@ import Repository from "../../repositories/repositoryFactory"
 const InfoRepository = Repository.get("info");
 
 const state = () => ({
-    assets: []
+    assets: [],
+    periods: []
 })
 
 const getters = {}
@@ -16,12 +17,23 @@ const actions = {
         }).catch(error => {
             return error.response;
         });
+    },
+    getPeriods({commit}) {
+        return InfoRepository.getPeriods().then(response => {
+            commit('setPeriods', response.data)
+            return response;
+        }).catch(error => {
+            return error.response;
+        });
     }
 }
 
 const mutations = {
     setAssets(state, assets) {
         state.assets = assets
+    },
+    setPeriods(state, periods) {
+        state.periods = periods
     }
 }
 

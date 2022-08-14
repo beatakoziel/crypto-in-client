@@ -8,7 +8,7 @@
             <img src="../assets/steps/one.png" style="color: aliceblue" class="logo" alt=""/>
             Basic data
           </div>
-          USDT amount you want to distribute between the given cryptocurrencies
+          USDT amount you want to distribute between the given assets
         </div>
         <v-row>
           <v-col
@@ -31,10 +31,17 @@
             <v-select
                 v-model="formData.assets"
                 :items="assets"
-                label="Cryptocurrencies*"
+                label="Assets*"
                 :rules="selectRules"
                 multiple
                 chips
+                outlined
+            ></v-select>
+            <v-select
+                v-model="formData.period"
+                :items="periods"
+                label="Period*"
+                :rules="singleSelectRules"
                 outlined
             ></v-select>
           </v-col>
@@ -123,6 +130,7 @@ export default {
       isFormValid: false,
       formData: {
         amount: null,
+        period: null,
         assets: [],
         generationsNumber: 10,
         solutionsPerPopulation: 10,
@@ -142,11 +150,14 @@ export default {
       selectRules: [
         v => !!v || "Selection is required",
         v => v.length > 1 || "At least 2 items selected are required"
+      ],
+      singleSelectRules: [
+        v => !!v || "Selection is required",
       ]
     }
   },
   methods: {
-    ...mapActions(["getAssets", "divideMoneyBetweenAssets"]),
+    ...mapActions(["getAssets", "getPeriods", "divideMoneyBetweenAssets"]),
     calculate() {
       this.divideMoneyBetweenAssets(this.formData)
     },
@@ -154,11 +165,13 @@ export default {
   computed: {
     ...mapGetters(['isLoading', 'getResult']),
     ...mapState({
-      assets: (state) => state.infoStore.assets
+      assets: (state) => state.infoStore.assets,
+      periods: (state) => state.infoStore.periods
     }),
   },
   mounted() {
     this.getAssets();
+    this.getPeriods();
   }
 }
 </script>
