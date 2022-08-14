@@ -18,10 +18,10 @@
               :headers="solutionTableHeaders"
               :items="getResult.response.solution"
               :items-per-page="5"
-              class="mr-15"
+              class="mr-10"
               style="max-width: 600px"
           ></v-data-table>
-          <div class="mt-5 ml-15">
+          <div class="mt-5 ml-10" style="width: 600px; display: flex; justify-content: center; align-items: center">
             <apexChart width="400" type="donut" :options="options" :series="getSeries"></apexChart>
           </div>
         </v-row>
@@ -30,14 +30,10 @@
               :headers="generationsResultsHeaders"
               :items="getResult.response.generations_results"
               :items-per-page="5"
-              class="mb-10"
-              style="min-width: 1100px"
+              class="mb-10 mr-10"
+              style="min-width: 600px"
           ></v-data-table>
-        </v-row>
-        <v-row class="mt-15 mb-15" style="display: flex; justify-content: center; align-items: center">
-          <div>
-            <apexChart width="1100" height="300" type="line" :options="chartOptions" :series="getLineChartSeries"></apexChart>
-          </div>
+            <apexChart class="ml-10" width="600px" height="300" type="line" :options="chartOptions" :series="getLineChartSeries"></apexChart>
         </v-row>
       </div>
     </v-card>
@@ -108,8 +104,7 @@ export default {
           sortable: false,
           value: 'generation',
         },
-        {text: 'Fitness value', value: 'fitness'},
-        {text: 'Change', value: 'change'}
+        {text: 'Fitness value', value: 'fitness'}
       ],
     }
   },
