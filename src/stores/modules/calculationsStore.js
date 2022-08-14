@@ -56,11 +56,11 @@ const mutations = {
         state.result.response = result;
         state.result.isError = false;
         state.donutChartSeries = []
-        Array.from(result).forEach(elem => {
+        Array.from(result.solution).forEach(elem => {
             state.donutChartSeries.push(elem.moneySolution)
         })
         state.donutChartLabels = []
-        Array.from(result).forEach(elem => {
+        Array.from(result.solution).forEach(elem => {
             state.donutChartLabels.push(elem.assetName)
         })
     },

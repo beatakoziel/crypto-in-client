@@ -12,19 +12,29 @@
           </div>
         </v-col>
       </v-row>
-      <v-row v-if="getResult.response && getResult.response.length > 0">
-        <v-col>
+      <div v-if="getResult.response && getResult.response.solution.length > 0">
+        <v-row style="display: flex; justify-content: center; align-items: center" >
+              <v-data-table
+                  :headers="solutionTableHeaders"
+                  :items="getResult.response.solution"
+                  :items-per-page="5"
+                  class="mr-15"
+                  style="max-width: 600px"
+              ></v-data-table>
+            <div class="mt-5 ml-15">
+              <apexChart width="400" type="donut" :options="options" :series="getSeries"></apexChart>
+            </div>
+        </v-row>
+        <v-row class="mt-15 mb-15" style="display: flex; justify-content: center; align-items: center">
           <v-data-table
-              :headers="headers"
-              :items="getResult.response"
+              :headers="generationsResultsHeaders"
+              :items="getResult.response.generations_results"
               :items-per-page="5"
-              class="elevation-1"
+              class="mb-10"
+              style="min-width: 1100px"
           ></v-data-table>
-          <div style="display: flex; justify-content: center; align-items: center" class="mt-5">
-            <apexChart width="380" type="donut" :options="options" :series="getSeries"></apexChart>
-          </div>
-        </v-col>
-      </v-row>
+        </v-row>
+      </div>
     </v-card>
   </div>
 </template>
@@ -35,14 +45,13 @@ import {mapState, mapGetters} from "vuex";
 export default {
   data() {
     return {
-      series: this.getSeries,
       options: {
         stroke: {
           colors: ['#1e1e1e']
         },
         colors: ['#29487b', '#6385b5', '#b1b0b1', '#b09878']
       },
-      headers: [
+      solutionTableHeaders: [
         {
           text: 'Asset',
           align: 'start',
@@ -50,7 +59,17 @@ export default {
           value: 'assetName',
         },
         {text: 'Percentage [%]', value: 'percentageSolution'},
-        {text: 'Capital [USD]', value: 'moneySolution'}
+        {text: 'Capital [$]', value: 'moneySolution'}
+      ],
+      generationsResultsHeaders: [
+        {
+          text: 'Generation',
+          align: 'start',
+          sortable: false,
+          value: 'generation',
+        },
+        {text: 'Fitness value', value: 'fitness'},
+        {text: 'Change', value: 'change'}
       ],
     }
   },
