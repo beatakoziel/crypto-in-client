@@ -13,20 +13,7 @@
         <v-row>
           <v-col
               cols="12"
-              md="4"
-          >
-            <v-text-field
-                v-model.number="formData.amount"
-                :rules="amountRules"
-                label="Amount in USDT*"
-                required
-                outlined
-                type="number"
-            ></v-text-field>
-          </v-col>
-          <v-col
-              cols="12"
-              md="4"
+              md="3"
           >
             <v-select
                 v-model="formData.assets"
@@ -45,6 +32,19 @@
                 outlined
             ></v-select>
           </v-col>
+          <v-col
+              cols="5"
+              md="2"
+          >
+            <v-text-field
+                v-model.number="formData.amount"
+                :rules="amountRules"
+                label="Amount in USD*"
+                required
+                outlined
+                type="number"
+            ></v-text-field>
+          </v-col>
         </v-row>
         <div class="mb-5">
           <div class="pt-5 text-h6 text--primary">
@@ -56,7 +56,7 @@
         <v-row>
           <v-col
               cols="12"
-              md="4"
+              md="2"
           >
             <v-text-field
                 v-model.number="formData.lambda"
@@ -77,7 +77,7 @@
         <v-row>
           <v-col
               cols="12"
-              md="4"
+              md="2"
           >
             <v-text-field
                 v-model.number="formData.generationsNumber"
@@ -89,7 +89,7 @@
           </v-col>
           <v-col
               cols="12"
-              md="4"
+              md="2"
           >
             <v-text-field
                 v-model.number="formData.solutionsPerPopulation"
