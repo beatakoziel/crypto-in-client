@@ -3,10 +3,6 @@ import Repository from "../../repositories/repositoryFactory"
 const CalculationsRepository = Repository.get("calculations");
 
 const state = () => ({
-    amount: null,
-    generationsNumber: 10,
-    solutionsPerPopulation: 10,
-    lambda: 0.5,
     result: {
         response: [],
         isError: false
