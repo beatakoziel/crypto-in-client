@@ -33,7 +33,8 @@
               class="mb-10 mr-10"
               style="min-width: 600px"
           ></v-data-table>
-            <apexChart class="ml-10" width="600px" height="300" type="line" :options="chartOptions" :series="getLineChartSeries"></apexChart>
+          <apexChart class="ml-10" width="600px" height="300" type="line" :options="chartOptions"
+                     :series="getLineChartSeries"></apexChart>
         </v-row>
       </div>
     </v-card>
@@ -85,6 +86,7 @@ export default {
         stroke: {
           colors: ['#1e1e1e']
         },
+        labels: [],
         colors: ['#29487b', '#6385b5', '#b1b0b1', '#b09878']
       },
       solutionTableHeaders: [
@@ -108,15 +110,25 @@ export default {
       ],
     }
   },
-  methods: {},
+  methods: {
+  },
+  watch: {
+    labelss: {
+      handler(newLabels) {
+        console.log(this.options)
+        this.options = {
+          labels: newLabels
+        };
+        console.log(this.options)
+      }
+    }
+  },
   computed: {
     ...mapGetters(['isLoading', 'getResult', 'getSeries', 'getLabels', 'getLineChartSeries']),
     ...mapState({
-      assets: (state) => state.infoStore.assets
+      assets: (state) => state.infoStore.assets,
+      labelss: (state) => state.calculationsStore.labels,
     }),
-
-  },
-  mounted() {
   }
 
 }
