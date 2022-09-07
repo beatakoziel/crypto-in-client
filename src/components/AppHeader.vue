@@ -6,7 +6,7 @@
     <div class="d-flex align-center">
 
       <h1 class="display-1 font-weight-black mt-1 --text">
-        InvestIn
+        CryptoIn
       </h1>
     </div>
 

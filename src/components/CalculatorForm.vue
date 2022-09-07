@@ -8,33 +8,129 @@
             <img src="../assets/steps/one.png" style="color: aliceblue" class="logo" alt=""/>
             Basic data
           </div>
-          USDT amount you want to distribute between the given assets
+          Period or start and end date for analysis
         </div>
         <v-row>
           <v-col
-              cols="5"
+              cols="12"
               md="2"
           >
-            <v-text-field
-                v-model.number="formData.amount"
-                :rules="amountRules"
-                label="Amount in USD*"
-                required
+            <v-select
+                label="Period selection*"
+                v-model="formData.periodType"
+                :items="period"
+                item-text="label"
+                item-value="value"
+                :rules="singleSelectRules"
                 outlined
-                type="number"
-            ></v-text-field>
+            ></v-select>
           </v-col>
           <v-col
               cols="5"
               md="2"
+              v-if="formData.periodType=='period'"
           >
             <v-select
-                v-model="formData.period"
-                :items="periods"
-                label="Period*"
-                :rules="singleSelectRules"
-                outlined
+                      v-model="formData.period"
+                      :items="periods"
+                      label="Period*"
+                      :rules="singleSelectRules"
+                      outlined
             ></v-select>
+          </v-col>
+          <v-col
+              cols="5"
+              md="2"
+              v-if="formData.periodType=='dateRange'"
+          >
+            <v-menu
+                ref="menu"
+                v-model="menu1"
+                :close-on-content-click="false"
+                :return-value.sync="formData.startDate"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="formData.startDate"
+                    label="Start date"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                  v-model="formData.startDate"
+                  no-title
+                  scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn
+                    text
+                    color="primary"
+                    @click="menu1 = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu1.save(formData.startDate)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+            <v-col
+                cols="5"
+                md="2"
+                v-if="formData.periodType=='dateRange'"
+            >
+            <v-menu
+                ref="menu"
+                v-model="menu2"
+                :close-on-content-click="false"
+                :return-value.sync="formData.endDate"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="formData.endDate"
+                    label="End date"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                  v-model="formData.endDate"
+                  no-title
+                  scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn
+                    text
+                    color="primary"
+                    @click="menu2 = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu2.save(formData.endDate)"
+                >
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
           </v-col>
         </v-row>
         <v-row>
@@ -66,8 +162,7 @@
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                    v-model.number="formData.lambda"
-                    :rules="lambdaRules"
+                    v-model.number="formData.lambdaValue"
                     label="Lambda*"
                     outlined
                     type="number"
@@ -109,6 +204,18 @@ risk and maximize profits</span>
                 v-model.number="formData.solutionsPerPopulation"
                 :rules="positiveRules"
                 label="Solutions per population*"
+                outlined
+                type="number"
+            ></v-text-field>
+          </v-col>
+          <v-col
+              cols="12"
+              md="2"
+          >
+            <v-text-field
+                v-model.number="formData.parentsMatingNumber"
+                :rules="positiveRules"
+                label="Parents mating number*"
                 outlined
                 type="number"
             ></v-text-field>
@@ -252,8 +359,13 @@ import {mapState, mapActions, mapGetters} from "vuex";
 export default {
   data() {
     return {
+      activePicker: null,
       result: [],
       isFormValid: false,
+      period: [
+        {label: "period value", value: "period"},
+        {label: "start-end date", value: "dateRange"},
+      ],
       parentSelectionTypes: [
         {label: "steady-state selection", value: "sss"},
         {label: "roulette wheel selection", value: "rws"},
@@ -282,12 +394,15 @@ export default {
         {label: "adaptive mutation", value: "adaptive"},
         {label: "none", value: null}],
       formData: {
-        amount: 100,
+        periodType: null,
         period: "1mo",
+        startDate:"2021-01-01",
+        endDate:"2022-01-01",
         assets: [],
-        lambda: 0.5,
+        lambdaValue: 0.5,
         generationsNumber: 10,
         solutionsPerPopulation: 10,
+        parentsMatingNumber: 1,
         parentSelectionType: "sss",
         kTournament: 3,
         keepParents: -1,
@@ -297,23 +412,22 @@ export default {
         mutationProbability: null
       },
       value: [],
-      amountRules: [
-        v => (v && v >= 100) || "Value should be 100$ minimum"
-      ],
+      menu1: false,
+      menu2: false,
       positiveRules: [
-        v => (v && v >= 0) || "Value should be 0 minimum"
+        v => (v && v >= 0) || "Value should be 0 minimum "
       ],
       keepParentsRules: [
         v => (v && v > 0) || "Value should be above 0",
         v => (v && v <= this.formData.solutionsPerPopulation) || "Value should be below 1"
       ],
       lambdaRules: [
-        v => (v && v > 0) || "Value should be above 0",
-        v => (v && v <= 1) || "Value should be below 1"
+        v => (v && v >= -1) || "Value should be 0 minimum",
+        v => (v && v <= 1) || "Value should be 1 maximum"
       ],
       probabilityRules: [
         v => (!v || v > 0) || "Value should be above 0",
-        v => (!v || v <= 1) || "Value should be below 1"
+        v => (!v || v <= 1) || "Value should be 1 maximum"
       ],
       selectRules: [
         v => !!v || "Selection is required",

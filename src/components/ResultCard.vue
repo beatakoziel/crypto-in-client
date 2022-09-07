@@ -18,6 +18,7 @@
               :headers="solutionTableHeaders"
               :items="getResult.response.solution"
               :items-per-page="5"
+              sort-desc.sync="Percentage solution"
               class="mr-10"
               style="max-width: 600px"
           ></v-data-table>
@@ -96,8 +97,9 @@ export default {
           sortable: false,
           value: 'assetName',
         },
-        {text: 'Percentage [%]', value: 'percentageSolution'},
-        {text: 'Capital [$]', value: 'moneySolution'}
+        {text: 'Percentage solution', value: 'percentageSolution'},
+        {text: 'Profit', value: 'profit'},
+        {text: 'Risk', value: 'risk'}
       ],
       generationsResultsHeaders: [
         {
